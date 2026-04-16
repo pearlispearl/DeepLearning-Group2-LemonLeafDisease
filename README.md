@@ -7,6 +7,10 @@ Follow these steps to set up the environment and launch the application.
 ### 1. Installation & Environment Setup
 Install all required dependencies directly via your terminal:
 ```bash
+pip install -r requirements.txt
+```
+or manually:
+```bash
 pip install torch torchvision streamlit pillow numpy pandas matplotlib seaborn scikit-learn tensorboard
 ```
 
@@ -19,24 +23,47 @@ To ensure the system functions correctly, organize your files as follows:
 * **`runs/`**: Directory containing TensorBoard logs for training history.
 * **`plot_curves.py`**: Utility script to generate Loss and Accuracy visualization graphs.
 * **`eval_metrics.py`**: Script for detailed performance evaluation (Classification Report & Confusion Matrix).
+* **`requirements.txt`**: List of required Python dependencies.
+* **`Dockerfile`**: Configuration file to build the Docker image for the application.
+* **`.dockerignore`**: Specifies files and folders to exclude from the Docker build process.
 
 ---
 
-## 3. Running the Demo App
+### ▶️ 3. Running the Demo App (Streamlit)
 Launch the web interface by executing the following command in your terminal:
 
 ```bash
 streamlit run app.py
 ```
 
-## 4. Generate Learning Curves
+### 🐳 4. Running with Docker (Alternative Method)
+This project also supports containerized execution using Docker for easier setup and deployment.
+
+**Build Docker Image**: Create the Docker image from the Dockerfile.
+```bash
+  docker build -t lemon-disease-app .
+```
+**Run Docker Container**: Start the container and expose the application on port 8501.
+```bash
+  docker run -p 8501:8501 lemon-disease-app
+```
+**Run Docker Container** (with custom name):
+```bash
+  docker run -d -p 8501:8501 --name lemon-leaf-detection lemon-disease-app
+```
+**Access Application**: Open your browser and go to:
+```bash
+  http://localhost:8501
+```
+
+## 5. Generate Learning Curves
 Execute this script to visualize the Training/Validation Loss and Accuracy from your TensorBoard logs:
 
 ```bash
 python plot_curves.py
 ```
 
-## 5. Run Performance Evaluation
+## 6. Run Performance Evaluation
 Generate a detailed Classification Report and Confusion Matrix for the selected model:
 
 ```bash
@@ -68,19 +95,21 @@ We conducted four iterations to determine the optimal model for deployment:
 
 * **Performance Metrics**: Calculated Accuracy, Precision, Recall, and F1-Score to ensure model stability across imbalanced classes.
 * **Visual Analysis**: Generated Confusion Matrices and Learning Curves (Loss/Accuracy) to detect training behaviors like Overfitting.
-* **Weight Optimization**: Implemented Prefix Stripping to resolve weight loading conflicts (e.g., removing `"model."` prefixes).
+* **Weight Optimization**: Implemented **Prefix Management** to resolve weight loading conflicts by dynamically adding the `"model."` prefix to match the internal class architecture.
 * **Error Handling**: Resolved Size Mismatch errors by standardizing Global Average Pooling across the architecture.
 * **Real-world Testing**: Evaluated model robustness against "Out-of-Distribution" data, including leaves with physical damage and varying backgrounds.
+
+### 🐳 Docker Integration Details
+This project was extended with Docker to improve portability and reproducibility:
+
+* **Dockerfile**: Defines the runtime environment for the application.
+* **requirements.txt**: Manages all required Python dependencies.
+* **.dockerignore**: Excludes unnecessary files to reduce image size.
+* **Containerized Execution**: Allows running the application without installing Python locally.
+* **CPU Compatibility**: Ensures the application runs using CPU-based PyTorch for broader support.
 
 ## 🛠 Tech Stack
 * **Framework**: PyTorch
 * **Frontend**: Streamlit
 * **Visualization**: TensorBoard, Matplotlib, Seaborn
 * **Image Processing**: Pillow (PIL), Torchvision
-
-## 🐳 (Bonus) Reproducibility with Docker
-To run this project in a containerized environment (no local installation required):
-
-### 1. Build the Docker Image
-```bash
-docker build -t lemon-disease-app .
