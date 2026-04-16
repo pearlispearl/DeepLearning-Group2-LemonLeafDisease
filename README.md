@@ -77,3 +77,10 @@ We conducted four iterations to determine the optimal model for deployment:
 * **Frontend**: Streamlit
 * **Visualization**: TensorBoard, Matplotlib, Seaborn
 * **Image Processing**: Pillow (PIL), Torchvision
+
+## 🐳 (Bonus) Reproducibility with Docker
+To run this project in a containerized environment (no local installation required):
+
+### 1. Build the Docker Image
+```bash
+docker build -t lemon-disease-app .

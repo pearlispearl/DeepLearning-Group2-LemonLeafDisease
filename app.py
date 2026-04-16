@@ -14,7 +14,7 @@ def load_prediction_model(model_type="ResNet50"):
     # 1. Define the weight path based on model type
     if model_type == "ResNet50":
         model = ResNetModel(num_classes=9)
-        weight_path = "best_model/resnet.pth" 
+        weight_path = "best_model/Resnet.pth" 
     else:
         model = MobileNetModel(num_classes=9)
         weight_path = "best_model/mobilenet.pth"
@@ -25,7 +25,10 @@ def load_prediction_model(model_type="ResNet50"):
     # 3. Strip 'model.' prefix from state_dict keys
     new_state_dict = {}
     for k, v in checkpoint.items():
-        new_state_dict[k.replace('model.', '')] = v
+        if not k.startswith('model.'):
+            new_state_dict[f'model.{k}'] = v
+        else:
+            new_state_dict[k] = v
     
     # 4. Load cleaned weights into the model
     model.load_state_dict(new_state_dict)
