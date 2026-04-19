@@ -3,6 +3,11 @@ from torch import nn
 import torch.nn.functional as F
 import torchvision.models as models
 
+CLASS_NAMES = [
+    'Anthracnose', 'Bacterial Blight', 'Citrus Canker', 'Curl Virus', 
+    'Deficiency Leaf', 'Dry Leaf', 'Healthy Leaf', 'Sooty Mould', 'Spider Mites'
+]
+
 class CNNBaseline(nn.Module):
 
     def __init__(self, num_classes=9):

@@ -5,6 +5,7 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import classification_report, confusion_matrix
+from model import CNNBaseline,CNNBaseline2, ResNetModel, MobileNetModel, CLASS_NAMES
 import numpy as np
 import os
 
@@ -12,95 +13,29 @@ import os
 # 🎯 STEP 1: MODEL CONFIGURATION
 # Change these values to switch between models
 # ==========================================
-ITERATION_NAME = "Iteration 4: MobileNetV2"
-MODEL_FILENAME = "mobilenet.pth"  # Options: cnn.pth, cnn2.pth, resnet.pth, mobilenet.pth
-MODEL_TYPE = "MobileNet"    # Options: SimpleCNN, ResNet50, MobileNet
+ITERATION_NAME = "Iteration 2: ResNet50"
+MODEL_FILENAME = "cnn2.pth"  # Options: cnn.pth, cnn2.pth, resnet.pth, mobilenet.pth
+MODEL_TYPE = "SimpleCNN2"    # Options: SimpleCNN, SimpleCNN2, ResNet50, MobileNet
 DATASET_PATH = "Lemon_Dataset/test"
 
 print(f"🚀 Starting Evaluation for: {ITERATION_NAME}")
 print(f"📦 Using Model File: {MODEL_FILENAME}")
 
-# ==========================================
-# 🧠 STEP 2: MODEL ARCHITECTURE DEFINITION
-# ==========================================
-class SimpleCNN(nn.Module):
-    def __init__(self):
-        super(SimpleCNN, self).__init__()
-        self.conv = nn.Sequential(
-            nn.Conv2d(3, 32, kernel_size=3, padding=1),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-            nn.Conv2d(32, 64, kernel_size=3, padding=1),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-            nn.AdaptiveAvgPool2d((1, 1)) 
-        )
-        self.fc = nn.Sequential(
-            nn.Flatten(),
-            nn.Linear(64, 128),
-            nn.ReLU(),
-            nn.Linear(128, 9)
-        )
-
-    def forward(self, x):
-        x = self.conv(x)
-        x = self.fc(x)
-        return x
-    
-class SimpleCNN2(nn.Module):
-    def __init__(self):
-        super(SimpleCNN2, self).__init__()
-        self.conv = nn.Sequential(
-            nn.Conv2d(3, 32, kernel_size=3, padding=1),
-            nn.BatchNorm2d(32),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-            nn.Conv2d(32, 64, kernel_size=3, padding=1),
-            nn.BatchNorm2d(64),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-            nn.Conv2d(64, 128, kernel_size=3, padding=1), # Added to match Unexpected key conv.8
-            nn.BatchNorm2d(128),                           # Added to match Unexpected key conv.9
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-            nn.AdaptiveAvgPool2d((1, 1))
-        )
-        self.fc = nn.Sequential(
-            nn.Flatten(),
-            nn.Linear(128, 128), # Adjusted based on fc.1 error
-            nn.ReLU(),
-            nn.Dropout(0.5),
-            nn.Linear(128, 9)    # Final output layer
-        )
-    def forward(self, x):
-        x = self.conv(x)
-        x = self.fc(x)
-        return x
 
 # ==========================================
-# ⚙️ STEP 3: INITIALIZATION & LOADING
+# ⚙️ STEP 2: INITIALIZATION & LOADING
 # ==========================================
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def load_selected_model():
     if MODEL_TYPE == "SimpleCNN":
-        model = SimpleCNN()
+        model = CNNBaseline() # เพิ่ม ()
     elif MODEL_TYPE == "SimpleCNN2":
-        model = SimpleCNN2()
+        model = CNNBaseline2() # เพิ่ม ()
     elif MODEL_TYPE == "ResNet50":
-        model = models.resnet50(weights=None)
-        num_ftrs = model.fc.in_features
-        # Updated from 128 to 256 as specified in the error message before
-        model.fc = nn.Sequential(
-            nn.Linear(num_ftrs, 256), # fc.3 maps 256 features to 9 classes
-            nn.ReLU(),                # Layer fc.1
-            nn.Dropout(0.2),          # Layer fc.2
-            nn.Linear(256, 9)         # Layer fc.3: Maps 256 features to 9 classes
-        )
+        model = ResNetModel(num_classes=9) 
     elif MODEL_TYPE == "MobileNet":
-        model = models.mobilenet_v2(weights=None)
-        # Standard architecture connects directly to the final class layer
-        model.classifier[1] = nn.Linear(model.last_channel, 9)
+        model = MobileNetModel(num_classes=9) 
     
     model = model.to(device)
     
@@ -132,7 +67,7 @@ def load_selected_model():
 model = load_selected_model()
     
 # ==========================================
-# 📊 STEP 4: EVALUATION & REPORTING
+# 📊 STEP 3: EVALUATION & REPORTING
 # ==========================================
 # 1. Prepare Test Dataset
 # Define image transformations (must match training phase)
@@ -167,7 +102,7 @@ with torch.no_grad():
 
 # 3. Generate Classification Report
 print(f"\n📊 Classification Report ({ITERATION_NAME}):")
-print(classification_report(all_labels, all_preds, target_names=test_data.classes))
+print(classification_report(all_labels, all_preds, target_names=CLASS_NAMES))
 
 # 4. Generate Confusion Matrix Visualization
 cm = confusion_matrix(all_labels, all_preds)

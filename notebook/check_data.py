@@ -63,3 +63,4 @@ plt.tight_layout()
 plt.savefig('sample_grid.png', dpi=150)
 plt.show()
 print("Saved → sample_grid.png")
+
