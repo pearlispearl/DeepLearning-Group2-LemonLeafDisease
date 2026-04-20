@@ -23,7 +23,7 @@ print("=" * 40)
 print(f"Total: {sum(class_counts.values())} images")
 print(f"Classes: {len(class_counts)}")
 
-# Confirm saved figure
+# Plot class distribution
 plt.figure(figsize=(12, 5))
 plt.bar(class_counts.keys(), class_counts.values(), color='steelblue')
 plt.xticks(rotation=45, ha='right')
@@ -32,4 +32,6 @@ plt.ylabel('Number of Images')
 plt.tight_layout()
 plt.savefig('class_distribution.png', dpi=150)
 plt.show()
+
+# Confirm saved figure
 print("Saved → class_distribution.png")
