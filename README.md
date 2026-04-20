@@ -17,12 +17,16 @@ pip install torch torchvision streamlit pillow numpy pandas matplotlib seaborn s
 ### 2. Project Structure
 To ensure the system functions correctly, organize your files as follows:
 
-* **`app.py`**: The main Streamlit web application.
-* **`notebook/model.py`**: Neural Network architecture definitions (ResNet & MobileNet).
-* **`best_model/`**: Folder containing pre-trained weights (`resnet.pth`, `mobilenet.pth`).
+* **`notebook/app.py`**: The main Streamlit web application.
+* **`notebook/model.py`**: Neural Network architecture definitions (CNN, CNN2, ResNet, MobileNet).
+* **`notebook/app.py`**: The main Streamlit web application.
+* **`notebook/trainer.py`**: The training pipeline, including data loading, hyperparameter setup, and TensorBoard logging.
+* **`notebook/predict.py`**: A CLI script used to load specific model weights and run a test prediction on a local image file.
+* **`notebook/dl_utils.py`**: Utility functions for the training loop and performance testing.
+* **`best_model/`**: Folder containing pre-trained weights (`cnn.pth, cnn2.pth, resnet.pth`, `mobilenet.pth`).
 * **`runs/`**: Directory containing TensorBoard logs for training history.
-* **`plot_curves.py`**: Utility script to generate Loss and Accuracy visualization graphs.
-* **`eval_metrics.py`**: Script for detailed performance evaluation (Classification Report & Confusion Matrix).
+* **`notebook/plot_curves.py`**: Utility script to generate Loss and Accuracy visualization graphs.
+* **`notebook/eval_metrics.py`**: Script for detailed performance evaluation (Classification Report & Confusion Matrix).
 * **`requirements.txt`**: List of required Python dependencies.
 * **`Dockerfile`**: Configuration file to build the Docker image for the application.
 * **`.dockerignore`**: Specifies files and folders to exclude from the Docker build process.
