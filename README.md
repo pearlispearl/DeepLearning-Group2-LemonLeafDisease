@@ -34,8 +34,32 @@ To ensure the system functions correctly, organize your files as follows:
 * **`Dockerfile`**: Configuration file to build the Docker image for the application.
 * **`.dockerignore`**: Specifies files and folders to exclude from the Docker build process.
 * **`sample_grid.png`**: Shows sample images from each class.
-* **`Lemon_Dataset/`**: Contains the training, validation, and test folders, along with a README file that provides the Roboflow dataset link.
+
 ---
+## Lemon Leaf Disease Dataset
+
+This folder contains the **Lemon Leaf Disease dataset** Contains the training, validation, and test folders, along with a README file that provides the Roboflow dataset link.
+
+## Roboflow Link:
+https://universe.roboflow.com/torpat-rnkue/lemon-leaf-disease-o6qho
+- The dataset is extended with Kaggle images and Google Images.
+- All supplementary images were manually curated to maintain label quality.
+
+## Description
+Lemon-Leaf-Disease are annotated in folder format.
+
+The following pre-processing was applied to each image:
+* Auto-orientation of pixel data (with EXIF-orientation stripping)
+* Resize to 224x224 (Fill (with center crop))
+  
+The following augmentation was applied to create 3 versions of each source image:
+* 50% probability of horizontal flip
+* Randomly crop between 0 and 20 percent of the image
+* Random rotation of between -15 and +15 degrees
+* Random brigthness adjustment of between -15 and +15 percent
+
+---
+  
 
 ### ▶️ 3. Running the Demo App (Streamlit)
 Launch the web interface by executing the following command in your terminal:
