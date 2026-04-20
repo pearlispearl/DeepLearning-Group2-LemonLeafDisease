@@ -3,9 +3,10 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import random
 
+# Path to the dataset directory (update if the path is different)
 dataset_path = r"C:\Users\ASUS\Desktop\DL_Project\Original Dataset"
 
-# ── 1. หาไฟล์ corrupted ──────────────────────────────
+# ── 1. Check for corrupted image files ─────────────────
 print("Checking corrupted files...")
 corrupted = []
 
@@ -23,7 +24,7 @@ for class_name in os.listdir(dataset_path):
 
 print(f"Total corrupted: {len(corrupted)} files")
 
-# ── 2. ตรวจ image sizes ──────────────────────────────
+# ── 2. Analyze image sizes ─────────────────────────────
 print("\nChecking image sizes...")
 sizes = []
 for class_name in os.listdir(dataset_path):
@@ -42,7 +43,7 @@ print("Top 5 sizes (W×H):")
 for size, count in Counter(sizes).most_common(5):
     print(f"  {size[0]}×{size[1]} → {count} images")
 
-# ── 3. แสดง sample รูปจากแต่ละ class ────────────────
+# ── 3. Display sample images from each class ───────────
 print("\nGenerating sample grid...")
 fig, axes = plt.subplots(3, 3, figsize=(12, 12))
 axes = axes.flatten()
@@ -62,5 +63,7 @@ plt.suptitle('Sample Images — LLDD Dataset', fontsize=14)
 plt.tight_layout()
 plt.savefig('sample_grid.png', dpi=150)
 plt.show()
+
+# Confirm saved figure
 print("Saved → sample_grid.png")
 
