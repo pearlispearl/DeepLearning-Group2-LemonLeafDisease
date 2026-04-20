@@ -27,12 +27,14 @@ To ensure the system functions correctly, organize your files as follows:
 * **`notebook/dl_utils.py`**: Utility functions for the training loop and performance testing.
 * **`best_model/`**: Folder containing pre-trained weights (`cnn.pth, cnn2.pth, resnet.pth`, `mobilenet.pth`).
 * **`runs/`**: Directory containing TensorBoard logs for training history.
+* **`preview/`**: Directory contains manually reviewed supplementary images from Google Images used to improve class balance and visual diversity.
 * **`notebook/plot_curves.py`**: Utility script to generate Loss and Accuracy visualization graphs.
 * **`notebook/eval_metrics.py`**: Script for detailed performance evaluation (Classification Report & Confusion Matrix).
 * **`requirements.txt`**: List of required Python dependencies.
 * **`Dockerfile`**: Configuration file to build the Docker image for the application.
 * **`.dockerignore`**: Specifies files and folders to exclude from the Docker build process.
-
+* **`sample_grid.png`**: Shows sample images from each class.
+* **`Lemon_Dataset/`**: Contains the training, validation, and test folders, along with a README file that provides the Roboflow dataset link.
 ---
 
 ### ▶️ 3. Running the Demo App (Streamlit)
