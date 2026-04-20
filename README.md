@@ -18,6 +18,8 @@ pip install torch torchvision streamlit pillow numpy pandas matplotlib seaborn s
 To ensure the system functions correctly, organize your files as follows:
 
 * **`notebook/app.py`**: The main Streamlit web application.
+* **`notebook/check_data.py`**: This script checks for corrupted images, analyzes image size distribution, and visualizes sample images from each class to validate the dataset quality before model training.
+* **`notebook/eda.py`**: This script counts the number of images in each class directory and visualizes the dataset class distribution by generating and saving a bar chart.
 * **`notebook/model.py`**: Neural Network architecture definitions (CNN, CNN2, ResNet, MobileNet).
 * **`notebook/app.py`**: The main Streamlit web application.
 * **`notebook/trainer.py`**: The training pipeline, including data loading, hyperparameter setup, and TensorBoard logging.
