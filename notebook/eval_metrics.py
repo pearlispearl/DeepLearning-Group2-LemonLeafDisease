@@ -13,7 +13,7 @@ import os
 # 🎯 STEP 1: MODEL CONFIGURATION
 # Change these values to switch between models
 # ==========================================
-ITERATION_NAME = "Iteration 2: ResNet50"
+ITERATION_NAME = "Iteration 2: cnn2.pth"
 MODEL_FILENAME = "cnn2.pth"  # Options: cnn.pth, cnn2.pth, resnet.pth, mobilenet.pth
 MODEL_TYPE = "SimpleCNN2"    # Options: SimpleCNN, SimpleCNN2, ResNet50, MobileNet
 DATASET_PATH = "Lemon_Dataset/test"
@@ -29,9 +29,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def load_selected_model():
     if MODEL_TYPE == "SimpleCNN":
-        model = CNNBaseline() # เพิ่ม ()
+        model = CNNBaseline()
     elif MODEL_TYPE == "SimpleCNN2":
-        model = CNNBaseline2() # เพิ่ม ()
+        model = CNNBaseline2()
     elif MODEL_TYPE == "ResNet50":
         model = ResNetModel(num_classes=9) 
     elif MODEL_TYPE == "MobileNet":
@@ -39,28 +39,22 @@ def load_selected_model():
     
     model = model.to(device)
     
-    model_path = os.path.join('best_model', MODEL_FILENAME)
+    model_path = os.path.join('..', 'best_model', MODEL_FILENAME)
     try:
         # 1. Load the model file into the checkpoint variable
         checkpoint = torch.load(model_path, map_location=device)
         
-        # 2. Create a new state_dict to remove "model." prefix
-        # (to match local model structure)
-        new_state_dict = {}
-        for k, v in checkpoint.items():
-            if k.startswith('model.'):
-                # Strip 'model.' prefix to align with standard architecture
-                new_state_dict[k.replace('model.', '')] = v
-            else:
-                new_state_dict[k] = v
-        
-        # 3. Load the cleaned state_dict into the model
-        model.load_state_dict(new_state_dict)
+        # Load directly without adding prefixes
+        model.load_state_dict(checkpoint) 
+        model_dict = model.state_dict()
+        print(f"Model keys: {list(model_dict.keys())[:5]}...") # Print first 5 keys
+        print(f"Checkpoint keys: {list(checkpoint.keys())[:5]}...") # Print first 5 keys
         model.eval()
-        print(f"✅ {MODEL_FILENAME} loaded successfully (with prefix stripping)!")
+        print(f"✅ {MODEL_FILENAME} loaded successfully!")
         
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"❌ Error loading model: {e}")
+        # If this fails, then you know for sure the structure is different
     
     return model
 
@@ -79,14 +73,15 @@ transform = transforms.Compose([
 
 # Load dataset (ensure path points to the folder containing 9 disease subfolders)
 # Example path: 'Lemon_Dataset/test'
-data_path = 'Lemon_Dataset/test'
+data_path = os.path.join('..', 'Lemon_Dataset', 'test')
 if os.path.exists(data_path):
     test_data = datasets.ImageFolder(root=data_path, transform=transform)
     test_loader = DataLoader(test_data, batch_size=32, shuffle=False)
     print(f"✅ Detected {len(test_data.classes)} classes: {test_data.classes}")
 else:
     print("❌ Path not found. Please check your dataset directory.")
-
+    exit()
+    
 # 2. Evaluation Loop
 all_preds = []
 all_labels = []
@@ -113,3 +108,8 @@ plt.title(f'Confusion Matrix - {ITERATION_NAME}')
 plt.ylabel('Actual Label')
 plt.xlabel('Predicted Label')
 plt.show()
+
+# เพิ่ม 2 บรรทัดนี้หลังโหลด test_data เสร็จ
+print("--- Class Mapping Check ---")
+print("Folder Order (test_data.classes):", test_data.classes)
+print("Model Order (CLASS_NAMES):      ", CLASS_NAMES)
