@@ -10,10 +10,9 @@ from model import CNNBaseline,CNNBaseline2, ResNetModel, MobileNetModel, CLASS_N
 import numpy as np
 import os
 
-# ==========================================
-# 🎯 STEP 1: MODEL CONFIGURATION
+
+# STEP 1: MODEL CONFIGURATION
 # Change these values to switch between models
-# ==========================================
 ITERATION_NAME = "Iteration 2: cnn2.pth"
 MODEL_FILENAME = "cnn2.pth"  # Options: cnn.pth, cnn2.pth, resnet.pth, mobilenet.pth
 MODEL_TYPE = "SimpleCNN2"    # Options: SimpleCNN, SimpleCNN2, ResNet50, MobileNet
@@ -23,9 +22,8 @@ print(f"🚀 Starting Evaluation for: {ITERATION_NAME}")
 print(f"📦 Using Model File: {MODEL_FILENAME}")
 
 
-# ==========================================
-# ⚙️ STEP 2: INITIALIZATION & LOADING
-# ==========================================
+
+# STEP 2: INITIALIZATION & LOADING
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def load_selected_model():
@@ -77,9 +75,8 @@ def load_selected_model():
 
 model = load_selected_model()
     
-# ==========================================
-# 📊 STEP 3: EVALUATION & REPORTING
-# ==========================================
+
+# STEP 3: EVALUATION & REPORTING
 # 1. Prepare Test Dataset
 # Dataset
 # Transform for CNN (uncomment line below to train CNN)
