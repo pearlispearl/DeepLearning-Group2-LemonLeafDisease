@@ -18,6 +18,8 @@ pip install torch torchvision streamlit pillow numpy pandas matplotlib seaborn s
 To ensure the system functions correctly, organize your files as follows:
 
 * **`notebook/app.py`**: The main Streamlit web application.
+* **`notebook/check_data.py`**: This script checks for corrupted images, analyzes image size distribution, and visualizes sample images from each class to validate the dataset quality before model training.
+* **`notebook/eda.py`**: This script counts the number of images in each class directory and visualizes the dataset class distribution by generating and saving a bar chart.
 * **`notebook/model.py`**: Neural Network architecture definitions (CNN, CNN2, ResNet, MobileNet).
 * **`notebook/app.py`**: The main Streamlit web application.
 * **`notebook/trainer.py`**: The training pipeline, including data loading, hyperparameter setup, and TensorBoard logging.
@@ -25,13 +27,39 @@ To ensure the system functions correctly, organize your files as follows:
 * **`notebook/dl_utils.py`**: Utility functions for the training loop and performance testing.
 * **`best_model/`**: Folder containing pre-trained weights (`cnn.pth, cnn2.pth, resnet.pth`, `mobilenet.pth`).
 * **`runs/`**: Directory containing TensorBoard logs for training history.
+* **`preview/`**: Directory contains manually reviewed supplementary images from Google Images used to improve class balance and visual diversity.
 * **`notebook/plot_curves.py`**: Utility script to generate Loss and Accuracy visualization graphs.
 * **`notebook/eval_metrics.py`**: Script for detailed performance evaluation (Classification Report & Confusion Matrix).
 * **`requirements.txt`**: List of required Python dependencies.
 * **`Dockerfile`**: Configuration file to build the Docker image for the application.
 * **`.dockerignore`**: Specifies files and folders to exclude from the Docker build process.
+* **`sample_grid.png`**: Shows sample images from each class.
 
 ---
+## Lemon Leaf Disease Dataset
+
+This folder contains the **Lemon Leaf Disease dataset** Contains the training, validation, and test folders, along with a README file that provides the Roboflow dataset link.
+
+## Roboflow Link:
+https://universe.roboflow.com/torpat-rnkue/lemon-leaf-disease-o6qho
+- The dataset is extended with Kaggle images and Google Images.
+- All supplementary images were manually curated to maintain label quality.
+
+## Description
+Lemon-Leaf-Disease are annotated in folder format.
+
+The following pre-processing was applied to each image:
+* Auto-orientation of pixel data (with EXIF-orientation stripping)
+* Resize to 224x224 (Fill (with center crop))
+  
+The following augmentation was applied to create 3 versions of each source image:
+* 50% probability of horizontal flip
+* Randomly crop between 0 and 20 percent of the image
+* Random rotation of between -15 and +15 degrees
+* Random brigthness adjustment of between -15 and +15 percent
+
+---
+  
 
 ### ▶️ 3. Running the Demo App (Streamlit)
 Launch the web interface by executing the following command in your terminal:
